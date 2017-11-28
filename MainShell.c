@@ -36,7 +36,7 @@ int main(int argc, char ** argv) {
 	char* readmeFileSuffix = "/readme.txt";
 	char* readmeFS = malloc(strlen(curEnv) + strlen(readmeFileSuffix) + 1);
 	strcpy(readmeFS, readmeFileSuffix);
-	strcat(readmeFS, "/readme.txt");
+	strcat(readmeFS, readmeFileSuffix);
 	readmeFP = fopen(readmeFS, "r");
 	fprintf(stdout, "Readme file location is %s", readmeFS);
 	free(readmeFS);
