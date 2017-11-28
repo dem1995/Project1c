@@ -33,10 +33,10 @@ int main(int argc, char ** argv) {
 
 								/* firstly, prepare the readme file pointer*/
 	char* curEnv = getenv("PWD");
-	char* readmeFileSuffix = "/readme.txt";
-	char* readmeFS = malloc(strlen(curEnv) + strlen(readmeFileSuffix) + 1);
+	char* readmeFileAppend = "/readme.txt";
+	char* readmeFS = malloc(strlen(curEnv) + strlen(readmeFileAppend) + 1);
 	strcpy(readmeFS, curEnv);
-	strcat(readmeFS, readmeFileSuffix);
+	strcat(readmeFS, readmeFileAppend);
 	readmeFP = fopen(readmeFS, "r");
 	fprintf(stdout, "Readme file location is %s", readmeFS);
 	free(readmeFS);
