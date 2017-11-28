@@ -35,7 +35,7 @@ int main(int argc, char ** argv) {
 	char* curEnv = getenv("PWD");
 	char* readmeFileSuffix = "/readme.txt";
 	char* readmeFS = malloc(strlen(curEnv) + strlen(readmeFileSuffix) + 1);
-	strcpy(readmeFS, readmeFileSuffix);
+	strcpy(readmeFS, curEnv);
 	strcat(readmeFS, readmeFileSuffix);
 	readmeFP = fopen(readmeFS, "r");
 	fprintf(stdout, "Readme file location is %s", readmeFS);
