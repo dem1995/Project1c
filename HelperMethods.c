@@ -200,5 +200,4 @@ void removeString(char** stringArray, int location)
 	}
 }
 
-void print()
 
