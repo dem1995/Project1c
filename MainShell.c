@@ -30,18 +30,17 @@ int main(int argc, char ** argv) {
 	FILE* inputFP = NULL;		// Pointer to the user-defined input file; is NULL if none exists
 	FILE* outputFP = NULL;		// Pointer to the user-defined output file; is NULL if none exists
 	bool shouldAppend = false;	// Whether the output file should be appended to (if false, it is truncated)
-
-								/* firstly, prepare the readme file pointer*/
+	
+	/* Firstly, prepare the readme file pointer */
 	char* curEnv = getenv("PWD");
 	char* readmeFileAppend = "/readme.txt";
 	char* readmeFS = malloc(strlen(curEnv) + strlen(readmeFileAppend) + 1);
 	strcpy(readmeFS, curEnv);
 	strcat(readmeFS, readmeFileAppend);
 	readmeFP = fopen(readmeFS, "r");
-	fprintf(stdout, "Readme file location is %s", readmeFS);
 	free(readmeFS);
 
-	/* keep reading input until "quit" command or eof of redirected input */
+	/* Now for input readin. Keep reading input until "quit" command or eof of redirected input */
 	while (!feof(stdin)) {
 
 		//Prints the current directory to stdout
