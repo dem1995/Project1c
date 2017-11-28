@@ -12,8 +12,8 @@ void removeRedirectionElements(char** args);
 void removeString(char** stringArray, int location);
 
 /*
- * Determines the name of the user-defined input and output files, if they exist. If an output file exists, it also determines whether it should be truncated, or appended to.
- */
+* Determines the name of the user-defined input and output files, if they exist. If an output file exists, it also determines whether it should be truncated, or appended to.
+*/
 void determineRedirection(char** argStrings, char* inputString, char* outputString, bool* shouldAppend)
 {
 	bool nextStringIsInputToken = false;
@@ -54,7 +54,7 @@ void determineRedirection(char** argStrings, char* inputString, char* outputStri
 
 
 /*
- * Prepares user-defined input and output files and sets up pointers to them. Also starts out by clearing *inputFPPointer and *outputFPPointer if they already are defined (if they're not NULL).
+* Prepares user-defined input and output files and sets up pointers to them. Also starts out by clearing *inputFPPointer and *outputFPPointer if they already are defined (if they're not NULL).
 */
 void setUpIO(char* inputString, char* outputString, FILE** inputFPPointer, FILE** outputFPPointer, bool shouldOpen)
 {
@@ -93,7 +93,7 @@ void setUpIO(char* inputString, char* outputString, FILE** inputFPPointer, FILE*
 }
 
 /*
- * Forks the current process and launches a new one. Prior to the launch, however, if the user has defined their own input and output locations, redirects I/O to them.
+* Forks the current process and launches a new one. Prior to the launch, however, if the user has defined their own input and output locations, redirects I/O to them.
 */
 void forkAndLaunch(char** args, char* inputFS, char* outputFS, bool shouldAppend)
 {
@@ -104,8 +104,8 @@ void forkAndLaunch(char** args, char* inputFS, char* outputFS, bool shouldAppend
 	case -1:
 		//syserr("fork");
 	case 0:
-		if (!strcmp(inputFS, "")==0)
-		//if (inputFP!=NULL)
+		if (!strcmp(inputFS, "") == 0)
+			//if (inputFP!=NULL)
 		{
 			//dup2(fileno(inputFP), STDIN_FILENO);
 			//fclose(inputFP);
@@ -113,7 +113,7 @@ void forkAndLaunch(char** args, char* inputFS, char* outputFS, bool shouldAppend
 			freopen(inputFS, "r", stdin);
 		}
 		if (!strcmp(outputFS, "") == 0)
-		//if(outputFP!=NULL)
+			//if(outputFP!=NULL)
 		{
 			//dup2(fileno(inputFP), STDOUT_FILENO);
 			//fclose(outputFP);
@@ -174,29 +174,31 @@ void bashLaunch(char* command, char* inputFS, char* outputFS, bool shouldAppend)
 
 
 /*
- * Removes redirection elements from the given string array (basically if "<", ">", or ">>" are tokens in the array, it removes those and the token immediately after them in the array).
+* Removes redirection elements from the given string array (basically if "<", ">", or ">>" are tokens in the array, it removes those and the token immediately after them in the array).
 */
 void removeRedirectionElements(char** args)
 {
-	for (int i=0; args[i] != NULL; i++)
+	for (int i = 0; args[i] != NULL; i++)
 	{
 		if ((strcmp(args[i], "<") == 0) || (strcmp(args[i], ">") == 0) || (strcmp(args[i], ">>") == 0))
 		{
 			removeString(args, i);
-			if (args[i]!=NULL)
+			if (args[i] != NULL)
 				removeString(args, i);
 		}
 	}
 }
 
 /*
- * Removes a string from the array at the given index, then shifts all the elements to the right of that left one to fill the gap.
+* Removes a string from the array at the given index, then shifts all the elements to the right of that left one to fill the gap.
 */
 void removeString(char** stringArray, int location)
 {
-	for ( int i=location; stringArray[i] != NULL; i++)
+	for (int i = location; stringArray[i] != NULL; i++)
 	{
 		stringArray[i] = stringArray[i + 1];
 	}
 }
+
+void print()
 

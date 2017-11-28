@@ -25,9 +25,18 @@ int main(int argc, char ** argv) {
 	char* args[MAX_ARGS];		// pointers to arg strings
 	char** arg;					// working pointer thru args
 	char* prompt = "==>";		// shell prompt
+
+	FILE* readmeFP = NULL;
 	FILE* inputFP = NULL;		// Pointer to the user-defined input file; is NULL if none exists
 	FILE* outputFP = NULL;		// Pointer to the user-defined output file; is NULL if none exists
 	bool shouldAppend = false;	// Whether the output file should be appended to (if false, it is truncated)
+
+								/* firstly, prepare the readme file pointer*/
+	char* curEnv = getenv("PWD");
+	char* readmeFS = malloc(strlen(curEnv) + strlen("readme.txt") + 1);
+	readmeFP = fopen(readmeFS, "r");
+	fprintf(stdout, "Readme file location is %s", readmeFS);
+	free(readmeFS);
 
 	/* keep reading input until "quit" command or eof of redirected input */
 	while (!feof(stdin)) {
@@ -35,43 +44,45 @@ int main(int argc, char ** argv) {
 		//Prints the current directory to stdout
 		fprintf(stdout, KCYN"%s"RESET"%s ", getenv("PWD"), prompt); //write prompt
 
-		//Begin the process of executing a command if the user has entered things
+																	//Begin the process of executing a command if the user has entered things
 		if (fgets(buf, MAX_BUFFER, stdin)) // read a line
-		{ 
+		{
 
 			/*TOKENIZING THE INPUT*/
 			arg = args;
 			*arg++ = strtok(buf, SEPARATORS);
 			while ((*arg++ = strtok(NULL, SEPARATORS))); // last entry will be NULL	
 
-			//if the user's input actually has things
+														 //if the user's input actually has things
 			if (args[0])
 			{
 
 				/*HANDLING I/O*/
-				char inputString[MAX_BUFFER] = "";
-				char outputString[MAX_BUFFER] = "";
+				char inputFS[MAX_BUFFER] = "";
+				char outputFS[MAX_BUFFER] = "";
 				//sets up the input file name and output file name, as well as pointers to the files those represent
-				determineRedirection(args, inputString, outputString, &shouldAppend);
-				setUpIO(inputString, outputString, &inputFP, &outputFP, shouldAppend);
+				determineRedirection(args, inputFS, outputFS, &shouldAppend);
+				setUpIO(inputFS, outputFS, &inputFP, &outputFP, shouldAppend);
 
 				/*CHECKING FOR COMMANDS*/
 				// check for internal commands
-				if (customCommandCheck(args[0], args, inputFP, outputFP, inputString, outputString, shouldAppend))
+				if (customCommandCheck(args[0], args, inputFP, outputFP, inputFS, outputFS, shouldAppend))
 					continue;
 				// check for quitting
 				else if (!strcmp(args[0], "quit")) // "quit" command
 					break; // break out of 'while' look
-				//else execute command on computer
+						   //else execute command on computer
 				else
 				{
-					forkAndLaunch(args, inputString, outputString, shouldAppend);
+					forkAndLaunch(args, inputFS, outputFS, shouldAppend);
 				}
 			}
-		}		
+		}
 	}
-	
+
 	//close files, if needed
+	if (readmeFP != NULL)
+		fclose(readmeFP);
 	if (inputFP != NULL)
 		fclose(inputFP);
 	if (outputFP != NULL)
@@ -80,8 +91,8 @@ int main(int argc, char ** argv) {
 }
 
 /*
- * Checks for custom commands (commands specific to this shell) and carries them out if they are found
- */
+* Checks for custom commands (commands specific to this shell) and carries them out if they are found
+*/
 bool customCommandCheck(char* arg0, char** args, FILE* inputFP, FILE* outputFP, char* inputFS, char* outputFS, bool shouldAppend)
 {
 	/*CLEAR COMMAND*/
@@ -124,9 +135,8 @@ bool customCommandCheck(char* arg0, char** args, FILE* inputFP, FILE* outputFP, 
 	{
 		//FILE* output = fopen(outputFS, "w");
 
-
 		char** env = environ;
-		if (outputFP==NULL)
+		if (outputFP == NULL)
 			while (*env)
 				fprintf(stdout, "%s\n", *env++); // step through environment
 		else
@@ -135,15 +145,15 @@ bool customCommandCheck(char* arg0, char** args, FILE* inputFP, FILE* outputFP, 
 	}
 
 	/*CHANGE DIRECTORY COMMAND*/
-	else if (!strcmp(args[0], "cd"))	
+	else if (!strcmp(args[0], "cd"))
 	{
 		if (args[1] == NULL) //if there's no second argument, just print the current directory
-		{ 
+		{
 			fprintf(stdout, "Current directory (According to environ): %s\n", getenv("PWD"));
 		}
 		else				//If there is a second argument
 		{
-			if (chdir(args[1])==0) 
+			if (chdir(args[1]) == 0)
 			{
 				//Setting the environment
 				char* buf = malloc(sizeof(char)*MAX_BUFFER);
@@ -155,6 +165,24 @@ bool customCommandCheck(char* arg0, char** args, FILE* inputFP, FILE* outputFP, 
 
 			}
 		}
+	}
+
+	/*ECHO COMMAND*/
+	else if (!strcmp(args[0], "echo"))
+	{
+		//TODO
+	}
+
+	/*PAUSE COMMAND*/
+	else if (!strcmp(args[0], "pause"))
+	{
+		//TODO
+	}
+
+	/*HELP COMMAND*/
+	else if (!strcmp(args[0], "help"))
+	{
+		//TODO
 	}
 	else
 		return false;
