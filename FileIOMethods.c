@@ -5,6 +5,7 @@
 *A class for defining methods that pertain to FILE manipulation
 */
 
+
 /*
 * Transfers the contents of inputsStream to outputStream if both are non-null FILE pointers
 */

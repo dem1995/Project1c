@@ -34,7 +34,6 @@ int main(int argc, char ** argv) {
 	FILE* outputFP = NULL;		// Pointer to the user-defined output file; is NULL if none exists
 	bool shouldAppend = false;	// Whether the output file should be appended to (if false, it is truncated)
 	
-	fprintf(shellOutFP, "test");
 	/* Firstly, prepare the readme file pointer */
 	const char* curEnv = getenv("PWD");
 	/*
@@ -46,22 +45,21 @@ int main(int argc, char ** argv) {
 	free(readmeFS);*/
 	openFile(curEnv, "readme", &readmeFP, "r");
 
-	fprintf(shellOutFP, "test2");
 	/* Next, see if there's a batch file to process. */
 	if (argv[1]!=NULL)
 	{
 		openFile(curEnv, argv[1], &shellInFP, "r");	
-		transferAllFileContents(shellInFP, shellOutFP);
 	}
 
 	/* Now for input readin. Keep reading input until "quit" command or eof of redirected input */
-	while (!feof(stdin)) {
+	while (!feof(shellInFP)) {
 
-		//Prints the current directory to stdout
-		fprintf(stdout, KCYN"%s"RESET"%s ", getenv("PWD"), prompt); //write prompt
+		//Prints the current directory to shellOutFP
+		if(shellInFP==stdin)
+			fprintf(shellOutFP, KCYN"%s"RESET"%s ", getenv("PWD"), prompt); //write prompt
 
 																	//Begin the process of executing a command if the user has entered things
-		if (fgets(buf, MAX_BUFFER, stdin)) // read a line
+		if (fgets(buf, MAX_BUFFER, shellInFP)) // read a line
 		{
 
 			/*TOKENIZING THE INPUT*/
@@ -99,6 +97,10 @@ int main(int argc, char ** argv) {
 	//close files, if needed
 	if (readmeFP != NULL)
 		fclose(readmeFP);
+	if (shellInFP != stdin)
+		fclose(shellInFP);
+	if (shellOutFP != stdin)
+		fclose(shellOutFP);
 	if (inputFP != NULL)
 		fclose(inputFP);
 	if (outputFP != NULL)
