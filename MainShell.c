@@ -186,6 +186,7 @@ bool customCommandCheck(char* arg0, char** args, FILE* readmeFP, FILE* inputFP, 
 	else if (!strcmp(args[0], "help"))
 	{
 		transferAllFileContents(readmeFP, stdout);
+		fprintf(stdout, "finished\n");
 	}
 	else
 		return false;
