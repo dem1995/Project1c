@@ -34,6 +34,7 @@ int main(int argc, char ** argv) {
 	FILE* outputFP = NULL;		// Pointer to the user-defined output file; is NULL if none exists
 	bool shouldAppend = false;	// Whether the output file should be appended to (if false, it is truncated)
 	
+	fprintf(shellOutFP, "test");
 	/* Firstly, prepare the readme file pointer */
 	const char* curEnv = getenv("PWD");
 	/*
@@ -45,8 +46,9 @@ int main(int argc, char ** argv) {
 	free(readmeFS);*/
 	openFile(curEnv, "readme", &readmeFP, "r");
 
+	fprintf(shellOutFP, "test2");
 	/* Next, see if there's a batch file to process. */
-	if (argc > 0)
+	if (false)
 	{
 		/*
 		char* curEnv = getenv("PWD");
