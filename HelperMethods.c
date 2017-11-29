@@ -61,7 +61,7 @@ void determineRedirection(char** argStrings, char* inputString, char* outputStri
 void forkAndLaunch(char** args, char* inputFS, char* outputFS, bool shouldAppend)
 {
 
-	fprintf(stdout, "test");
+	fprintf(stdout, "test\n");
 
 	int status;
 	pid_t pid;
@@ -70,9 +70,9 @@ void forkAndLaunch(char** args, char* inputFS, char* outputFS, bool shouldAppend
 	int lastArgIndex;
 	for (lastArgIndex = 0; args[lastArgIndex] != NULL; lastArgIndex++)
 	{
-		fprintf(stdout, "Argument %i is %s\n", pid, args[lastArgIndex]);
+		fprintf(stdout, "Argument %i is %s\n", lastArgIndex, args[lastArgIndex]);
 	}
-	fprintf(stdout, "The last argument is %s", args[lastArgIndex-1]);
+	fprintf(stdout, "The last argument is %s\n", args[lastArgIndex-1]);
 	if (!strcmp(args[--lastArgIndex], "&"))
 		shouldWaitForChild = false;
 
@@ -105,7 +105,7 @@ void forkAndLaunch(char** args, char* inputFS, char* outputFS, bool shouldAppend
 	default:
 		if (shouldWaitForChild)
 		{
-			fprintf(stdout, "Process with id %i is waiting for child to finish", pid);
+			fprintf(stdout, "Process with id %i is waiting for child to finish\n", pid);
 			do
 			{
 				int w = waitpid(pid, &status, WUNTRACED);
