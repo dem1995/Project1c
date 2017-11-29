@@ -48,7 +48,7 @@ int main(int argc, char ** argv) {
 	/* Next, see if there's a batch file to process. */
 	if (argv[1]!=NULL)
 	{
-		if (argv[1][0] == "/")
+		if (argv[1][0] == '/')
 			shellInFP = fopen(argv[1], "r");
 		else
 			openFile(getEnv("PWD"), argv[1], &shellInFP, "r");
