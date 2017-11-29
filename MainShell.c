@@ -49,9 +49,10 @@ int main(int argc, char ** argv) {
 	if (argv[1]!=NULL)
 	{
 		if (!strcmp(argv[1][0], "/"))
-			openFile(getEnv("PWD"), argv[1], &shellInFP, "r");
+			shellInFP = fopen(argv[1], "r");
 		else
-			shellInFP = fopen(argv[1][0], "r");
+			openFile(getEnv("PWD"), argv[1], &shellInFP, "r");
+
 	}
 
 	/* Now for input readin. Keep reading input until "quit" command or eof of redirected input */
