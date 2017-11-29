@@ -76,7 +76,10 @@ void forkAndLaunch(char** args, char* inputFS, char* outputFS, bool shouldAppend
 	lastArgIndex--;
 	fprintf(stdout, "The last argument is %s\n", args[lastArgIndex]);
 	if (!strcmp(args[lastArgIndex], "$"))
+	{
 		shouldWaitForChild = false;
+		args[lastArgIndex] = NULL;
+	}
 
 	fprintf(stdout, "comparison value %i\n", (int)shouldWaitForChild);
 	
@@ -108,7 +111,6 @@ void forkAndLaunch(char** args, char* inputFS, char* outputFS, bool shouldAppend
 	default:
 		if (shouldWaitForChild)
 		{
-			fprintf(stdout, "Process with id %i is waiting for child to finish\n", pid);
 			do
 			{
 				int w = waitpid(pid, &status, WUNTRACED);
