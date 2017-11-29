@@ -189,7 +189,6 @@ bool customCommandCheck(char* arg0, char** args, FILE* readmeFP, FILE* inputFP, 
 	/*ECHO COMMAND*/
 	else if (!strcmp(args[0], "echo"))
 	{
-		fprintf(stdout, " ");
 		if (args[1] != NULL)
 		{
 			fprintf(outputFP, args[1]);
