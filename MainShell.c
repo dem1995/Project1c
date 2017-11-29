@@ -48,9 +48,9 @@ int main(int argc, char ** argv) {
 
 	fprintf(shellOutFP, "test2");
 	/* Next, see if there's a batch file to process. */
-	if (argc>0)
+	if (argv[1]!=NULL)
 	{
-		fprintf(shellOutFP, argv[1]);
+		fprintf(shellOutFP, "test");
 		/*
 		char* curEnv = getenv("PWD");
 		char* readmeFileAppend = "/readme";
