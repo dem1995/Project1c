@@ -212,6 +212,12 @@ bool customCommandCheck(char* arg0, char** args, FILE* readmeFP, FILE* inputFP, 
 	{
 		transferAllFileContents(readmeFP, stdout);
 	}
+	/*TEST COMMAND*/
+	else if (!strcmp(args[0], "test"))
+	{
+		while (true)
+			fprintf(outputFP, "hi\n");
+	}
 	else
 		return false;
 	return true;
