@@ -77,7 +77,7 @@ void forkAndLaunch(char** args, char* inputFS, char* outputFS, bool shouldAppend
 	if (!strcmp(args[lastArgIndex], "$"))
 		shouldWaitForChild = false;
 
-	fprintf("%i\n", shouldWaitForChild);
+	fprintf(stdout, "%i\n", shouldWaitForChild);
 	
 	switch (pid = fork())
 	{
