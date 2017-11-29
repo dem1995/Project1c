@@ -51,7 +51,7 @@ int main(int argc, char ** argv) {
 		if (argv[1][0] == '/')
 			shellInFP = fopen(argv[1], "r");
 		else
-			openFile(getEnv("PWD"), argv[1], &shellInFP, "r");
+			openFile(getenv("PWD"), argv[1], &shellInFP, "r");
 
 	}
 
