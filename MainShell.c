@@ -80,7 +80,7 @@ int main(int argc, char ** argv) {
 
 				/*CHECKING FOR COMMANDS*/
 				// check for internal commands
-				if (customCommandCheck(args[0], args, readmeFP, inputFP, outputFP, inputFS, outputFS, shouldAppend))
+				if (customCommandCheck(args, readmeFP, inputFP, outputFP, inputFS, outputFS, shouldAppend))
 					continue;
 				// check for quitting
 				else if (!strcmp(args[0], "quit")) // "quit" command
