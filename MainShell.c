@@ -88,6 +88,7 @@ int main(int argc, char ** argv) {
 						   //else execute command on computer
 				else
 				{
+					fprintf(stdout, "testtest");
 					forkAndLaunch(args, inputFS, outputFS, shouldAppend);
 				}
 			}
