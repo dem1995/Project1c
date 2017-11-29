@@ -72,8 +72,9 @@ void forkAndLaunch(char** args, char* inputFS, char* outputFS, bool shouldAppend
 	{
 		fprintf(stdout, "Argument %i is %s\n", lastArgIndex, args[lastArgIndex]);
 	}
-	fprintf(stdout, "The last argument is %s\n", args[lastArgIndex-1]);
-	if (!strcmp(args[--lastArgIndex], "&"))
+	lastArgIndex--;
+	fprintf(stdout, "The last argument is %s\n", args[lastArgIndex]);
+	if (!strcmp(args[lastArgIndex], "$"))
 		shouldWaitForChild = false;
 
 	switch (pid = fork())
