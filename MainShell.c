@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "HelperMethods.c"
+#include "FileIOMethods.c"
 
 #include <unistd.h>
 #include <sys/wait.h>
@@ -17,7 +18,7 @@
 #define KCYN  "\x1B[36m"	//Cyan text
 #define RESET "\x1B[0m"		//Reset text color
 
-bool customCommandCheck(char* arg0, char** args, FILE* inputFP, FILE* outputFP, char* inputFS, char* outputFS, bool ShouldAppend);
+bool customCommandCheck(char* arg0, char** args, FILE* readmeFP, FILE* inputFP, FILE* outputFP, char* inputFS, char* outputFS, bool ShouldAppend);
 
 extern char** environ;
 int main(int argc, char ** argv) {
@@ -33,7 +34,7 @@ int main(int argc, char ** argv) {
 	
 	/* Firstly, prepare the readme file pointer */
 	char* curEnv = getenv("PWD");
-	char* readmeFileAppend = "/readme.txt";
+	char* readmeFileAppend = "/readme";
 	char* readmeFS = malloc(strlen(curEnv) + strlen(readmeFileAppend) + 1);
 	strcpy(readmeFS, curEnv);
 	strcat(readmeFS, readmeFileAppend);
@@ -68,7 +69,7 @@ int main(int argc, char ** argv) {
 
 				/*CHECKING FOR COMMANDS*/
 				// check for internal commands
-				if (customCommandCheck(args[0], args, inputFP, outputFP, inputFS, outputFS, shouldAppend))
+				if (customCommandCheck(args[0], args, readmeFP, inputFP, outputFP, inputFS, outputFS, shouldAppend))
 					continue;
 				// check for quitting
 				else if (!strcmp(args[0], "quit")) // "quit" command
@@ -95,7 +96,7 @@ int main(int argc, char ** argv) {
 /*
 * Checks for custom commands (commands specific to this shell) and carries them out if they are found
 */
-bool customCommandCheck(char* arg0, char** args, FILE* inputFP, FILE* outputFP, char* inputFS, char* outputFS, bool shouldAppend)
+bool customCommandCheck(char* arg0, char** args, FILE* readmeFP, FILE* inputFP, FILE* outputFP, char* inputFS, char* outputFS, bool shouldAppend)
 {
 	/*CLEAR COMMAND*/
 	if (!strcmp(args[0], "clr")) //"clear" command
@@ -184,7 +185,7 @@ bool customCommandCheck(char* arg0, char** args, FILE* inputFP, FILE* outputFP, 
 	/*HELP COMMAND*/
 	else if (!strcmp(args[0], "help"))
 	{
-		//TODO
+		transferAllFileContents(readmeFP, stdout);
 	}
 	else
 		return false;

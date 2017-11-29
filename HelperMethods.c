@@ -53,44 +53,7 @@ void determineRedirection(char** argStrings, char* inputString, char* outputStri
 }
 
 
-/*
-* Prepares user-defined input and output files and sets up pointers to them. Also starts out by clearing *inputFPPointer and *outputFPPointer if they already are defined (if they're not NULL).
-*/
-void setUpIO(char* inputString, char* outputString, FILE** inputFPPointer, FILE** outputFPPointer, bool shouldOpen)
-{
-	if (*inputFPPointer != NULL)
-	{
-		fclose(*inputFPPointer);
-		*inputFPPointer = NULL;
-	}
-	if (*outputFPPointer != NULL)
-	{
-		fclose(*outputFPPointer);
-		*outputFPPointer = NULL;
-	}
 
-	if (strcmp(inputString, "") != 0)	//if there's an input string
-	{
-		*inputFPPointer = fopen(inputString, "r");
-		//freopen(inputString, "r", stdin);
-		//stdin = fopen(inputString, "r");
-		//int fd = open(inputString, O_RDONLY);
-		//dup2(fd, STDIN_FILENO);
-		//close(fd);
-	}
-	if (strcmp(outputString, "") != 0) //if there's an output string
-	{
-		if (shouldOpen)
-			*outputFPPointer = fopen(outputString, "a");
-		else
-			*outputFPPointer = fopen(outputString, "w");
-
-		//freopen(outputString, "w", stdout);
-		//int fd = open(inputString, O_WRONLY | O_CREAT | O_TRUNC);
-		//dup2(fd, STDOUT_FILENO);
-		//close(fd);
-	}
-}
 
 /*
 * Forks the current process and launches a new one. Prior to the launch, however, if the user has defined their own input and output locations, redirects I/O to them.
