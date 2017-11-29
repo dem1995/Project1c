@@ -50,19 +50,8 @@ int main(int argc, char ** argv) {
 	/* Next, see if there's a batch file to process. */
 	if (argv[1]!=NULL)
 	{
-		fprintf(shellOutFP, "test");
-		/*
-		char* curEnv = getenv("PWD");
-		char* readmeFileAppend = "/readme";
-		char* readmeFS = malloc(strlen(curEnv) + strlen(readmeFileAppend) + 1);
-		strcpy(readmeFS, curEnv);
-		strcat(readmeFS, readmeFileAppend);
-		readmeFP = fopen(readmeFS, "r");
-		free(readmeFS);
-		*/
-		//openFile(curEnv, argv[1], &shellInFP, "r");
-		
-		//commandFP = fopen
+		openFile(curEnv, argv[1], &shellInFP, "r");	
+		transferAllFileContents(shellInFP, shellOutFP);
 	}
 
 	/* Now for input readin. Keep reading input until "quit" command or eof of redirected input */
