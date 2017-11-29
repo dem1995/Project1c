@@ -184,7 +184,8 @@ bool customCommandCheck(char** args, FILE* readmeFP, FILE* inputFP, FILE* output
 	/*ECHO COMMAND*/
 	else if (!strcmp(args[0], "echo"))
 	{
-		if (args[1] != NULL)
+		fprintf(outputFP, " ");
+		/*if (args[1] != NULL)
 		{
 			fprintf(outputFP, args[1]);
 			for (int i = 2; args[i] != NULL; i++)
@@ -192,7 +193,7 @@ bool customCommandCheck(char** args, FILE* readmeFP, FILE* inputFP, FILE* output
 				fprintf(outputFP, " ");
 				fprintf(outputFP, args[i]);
 			}
-		}
+		}*/
 
 	}
 
