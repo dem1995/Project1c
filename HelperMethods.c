@@ -62,6 +62,13 @@ void forkAndLaunch(char** args, char* inputFS, char* outputFS, bool shouldAppend
 {
 	int status;
 	pid_t pid;
+	bool shouldWaitForChild = true;
+
+	int lastArgIndex;
+	for (lastArgIndex = 0; args[lastArgIndex] != NULL; lastArgIndex++);
+	if (!strcmp(args[--lastArgIndex], "&"))
+		shouldWaitForChild = false;
+
 	switch (pid = fork())
 	{
 	case -1:
@@ -89,10 +96,11 @@ void forkAndLaunch(char** args, char* inputFS, char* outputFS, bool shouldAppend
 		execvp(args[0], args);
 		//syserr("exec");
 	default:
-		do
-		{
-			int w = waitpid(pid, &status, WUNTRACED);
-		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+		if(shouldWaitForChild)
+			do
+			{
+				int w = waitpid(pid, &status, WUNTRACED);
+			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
 }
 
