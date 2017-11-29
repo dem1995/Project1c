@@ -48,8 +48,9 @@ int main(int argc, char ** argv) {
 
 	fprintf(shellOutFP, "test2");
 	/* Next, see if there's a batch file to process. */
-	if (false)
+	if (argc>0)
 	{
+		fprintf(shellOutFP, "test3");
 		/*
 		char* curEnv = getenv("PWD");
 		char* readmeFileAppend = "/readme";
@@ -59,7 +60,7 @@ int main(int argc, char ** argv) {
 		readmeFP = fopen(readmeFS, "r");
 		free(readmeFS);
 		*/
-		openFile(curEnv, argv[1], &shellInFP, "r");
+		//openFile(curEnv, argv[1], &shellInFP, "r");
 		
 		//commandFP = fopen
 	}
