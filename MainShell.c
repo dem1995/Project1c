@@ -35,15 +35,7 @@ int main(int argc, char ** argv) {
 	bool shouldAppend = false;	// Whether the output file should be appended to (if false, it is truncated)
 	
 	/* Firstly, prepare the readme file pointer */
-	const char* curEnv = getenv("PWD");
-	/*
-	const char* readmeFileAppend = "/readme";
-	char* readmeFS = malloc(strlen(curEnv) + strlen(readmeFileAppend) + 1);
-	strcpy(readmeFS, curEnv);
-	strcat(readmeFS, readmeFileAppend);
-	readmeFP = fopen(readmeFS, "r");
-	free(readmeFS);*/
-	openFile(curEnv, "readme", &readmeFP, "r");
+	openFile(getEnv("PWD"), "readme", &readmeFP, "r");
 
 	/* Next, see if there's a batch file to process. */
 	if (argv[1]!=NULL)
@@ -52,7 +44,11 @@ int main(int argc, char ** argv) {
 			shellInFP = fopen(argv[1], "r");
 		else
 			openFile(getenv("PWD"), argv[1], &shellInFP, "r");
-
+		if (shellInFP == NULL)
+		{
+			shellInFP = stdin;
+			fprintf(shellOutFP, "There was a problem opening the batch file. Reverting to using standard input.");
+		}
 	}
 
 	/* Now for input readin. Keep reading input until "quit" command or eof of redirected input */
