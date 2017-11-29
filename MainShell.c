@@ -113,6 +113,11 @@ int main(int argc, char ** argv) {
 */
 bool customCommandCheck(char* arg0, char** args, FILE* readmeFP, FILE* inputFP, FILE* outputFP, char* inputFS, char* outputFS, bool shouldAppend)
 {
+	if (outputFP == NULL)
+	{
+		outputFP = stdout;
+	}
+
 	/*CLEAR COMMAND*/
 	if (!strcmp(args[0], "clr")) //"clear" command
 	{
@@ -154,12 +159,8 @@ bool customCommandCheck(char* arg0, char** args, FILE* readmeFP, FILE* inputFP, 
 		//FILE* output = fopen(outputFS, "w");
 
 		char** env = environ;
-		if (outputFP == NULL)
-			while (*env)
-				fprintf(stdout, "%s\n", *env++); // step through environment
-		else
-			while (*env)
-				fprintf(outputFP, "%s\n", *env++); // step through environment
+		while (*env)
+			fprintf(outputFP, "%s\n", *env++); // step through environment
 	}
 
 	/*CHANGE DIRECTORY COMMAND*/
@@ -188,7 +189,16 @@ bool customCommandCheck(char* arg0, char** args, FILE* readmeFP, FILE* inputFP, 
 	/*ECHO COMMAND*/
 	else if (!strcmp(args[0], "echo"))
 	{
-		//TODO
+		fprintf(stdout, " ");
+		if (args[1] != NULL)
+		{
+			fprintf(outputFP, args[1]);
+			for (int i = 2; args[i] != NULL; i++)
+			{
+				fprintf(outputFP, " ");
+				fprintf(outputFP, args[i]);
+			}
+		}
 	}
 
 	/*PAUSE COMMAND*/
