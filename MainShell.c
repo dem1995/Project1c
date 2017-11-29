@@ -198,12 +198,13 @@ bool customCommandCheck(char* arg0, char** args, FILE* readmeFP, FILE* inputFP, 
 				fprintf(outputFP, args[i]);
 			}
 		}
+		fprintf(outputFP, "\n");
 	}
 
 	/*PAUSE COMMAND*/
 	else if (!strcmp(args[0], "pause"))
 	{
-		//TODO
+		getpass("Press Enter to continue...");
 	}
 
 	/*HELP COMMAND*/
