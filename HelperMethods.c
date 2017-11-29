@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <signal.h>
 #include <unistd.h>
 #include <sys/wait.h>
 
@@ -104,7 +105,6 @@ void forkAndLaunch(char** args, char* inputFS, char* outputFS, bool shouldAppend
 				freopen(outputFS, "w", stdout);
 		}
 		execvp(args[0], args);
-		//syserr("exec");
 	default:
 		if (shouldWaitForChild)
 		{
@@ -115,6 +115,7 @@ void forkAndLaunch(char** args, char* inputFS, char* outputFS, bool shouldAppend
 			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 		}
 	}
+
 }
 
 

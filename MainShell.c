@@ -55,9 +55,10 @@ int main(int argc, char ** argv) {
 	while (!feof(shellInFP)) {
 
 		//Prints the current directory to shellOutFP
+		fprintf(stdout, "Current pid %i\n", getpid());
 		if(shellInFP==stdin)
 			fprintf(shellOutFP, KCYN"%s"RESET"%s ", getenv("PWD"), prompt); //write prompt
-
+		
 																	//Begin the process of executing a command if the user has entered things
 		if (fgets(buf, MAX_BUFFER, shellInFP)) // read a line
 		{
