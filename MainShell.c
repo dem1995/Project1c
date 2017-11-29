@@ -28,18 +28,39 @@ int main(int argc, char ** argv) {
 	char* prompt = "==>";		// shell prompt
 
 	FILE* readmeFP = NULL;
+	FILE* shellInFP = stdin;
+	FILE* shellOutFP = stdout;
 	FILE* inputFP = NULL;		// Pointer to the user-defined input file; is NULL if none exists
 	FILE* outputFP = NULL;		// Pointer to the user-defined output file; is NULL if none exists
 	bool shouldAppend = false;	// Whether the output file should be appended to (if false, it is truncated)
 	
 	/* Firstly, prepare the readme file pointer */
-	char* curEnv = getenv("PWD");
-	char* readmeFileAppend = "/readme";
+	const char* curEnv = getenv("PWD");
+	/*
+	const char* readmeFileAppend = "/readme";
 	char* readmeFS = malloc(strlen(curEnv) + strlen(readmeFileAppend) + 1);
 	strcpy(readmeFS, curEnv);
 	strcat(readmeFS, readmeFileAppend);
 	readmeFP = fopen(readmeFS, "r");
-	free(readmeFS);
+	free(readmeFS);*/
+	openFile(curEnv, "readme", &readmeFP, "r");
+
+	/* Next, see if there's a batch file to process. */
+	if (argc > 0)
+	{
+		/*
+		char* curEnv = getenv("PWD");
+		char* readmeFileAppend = "/readme";
+		char* readmeFS = malloc(strlen(curEnv) + strlen(readmeFileAppend) + 1);
+		strcpy(readmeFS, curEnv);
+		strcat(readmeFS, readmeFileAppend);
+		readmeFP = fopen(readmeFS, "r");
+		free(readmeFS);
+		*/
+		openFile(curEnv, argv[1], &shellInFP, "r");
+		
+		//commandFP = fopen
+	}
 
 	/* Now for input readin. Keep reading input until "quit" command or eof of redirected input */
 	while (!feof(stdin)) {
@@ -186,7 +207,6 @@ bool customCommandCheck(char* arg0, char** args, FILE* readmeFP, FILE* inputFP, 
 	else if (!strcmp(args[0], "help"))
 	{
 		transferAllFileContents(readmeFP, stdout);
-		fprintf(stdout, "finished\n");
 	}
 	else
 		return false;

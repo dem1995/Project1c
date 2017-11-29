@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
-
+#include <string.h>
 /*
 *A class for defining methods that pertain to FILE manipulation
 */
@@ -17,6 +17,19 @@ void transferAllFileContents(FILE* inputStream, FILE* outputStream)
 			fputc(c, outputStream);
 		}
 	}
+}
+
+/*
+*
+*/
+bool openFile(const char* fileDirectory, const char* fileName, FILE** filePointer, const char* streamAccessType)
+{
+	char* readmeFS = malloc(strlen(fileDirectory) + strlen(fileName) + 2);
+	strcpy(readmeFS, fileDirectory);
+	strcat(readmeFS, "/");
+	strcat(readmeFS, fileName);
+	*filePointer = fopen(readmeFS, streamAccessType);
+	free(readmeFS);
 }
 
 /*
