@@ -38,15 +38,15 @@ bool openFile(const char* fileDirectory, const char* fileName, FILE** filePointe
 */
 void setUpIO(char* inputString, char* outputString, FILE** inputFPPointer, FILE** outputFPPointer, bool shouldOpen)
 {
-	if (*inputFPPointer != NULL)
+	if (*inputFPPointer != NULL && *inputFPPointer != stdin)
 	{
 		fclose(*inputFPPointer);
-		*inputFPPointer = NULL;
+		*inputFPPointer = stdin;
 	}
-	if (*outputFPPointer != NULL)
+	if (*outputFPPointer != NULL && outputFPPointer !=stdout)
 	{
 		fclose(*outputFPPointer);
-		*outputFPPointer = NULL;
+		*outputFPPointer = stdout;
 	}
 
 	if (strcmp(inputString, "") != 0)	//if there's an input string
