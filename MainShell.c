@@ -35,7 +35,7 @@ int main(int argc, char ** argv) {
 	bool shouldAppend = false;	// Whether the output file should be appended to (if false, it is truncated)
 	
 	/* Firstly, prepare the readme file pointer */
-	openFile(getEnv("PWD"), "readme", &readmeFP, "r");
+	openFile(getenv("PWD"), "readme", &readmeFP, "r");
 
 	/* Next, see if there's a batch file to process. */
 	if (argv[1]!=NULL)
