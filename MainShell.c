@@ -48,7 +48,10 @@ int main(int argc, char ** argv) {
 	/* Next, see if there's a batch file to process. */
 	if (argv[1]!=NULL)
 	{
-		openFile(curEnv, argv[1], &shellInFP, "r");	
+		if (!strcmp(argv[1][0], "/"))
+			openFile(getEnv("PWD"), argv[1], &shellInFP, "r");
+		else
+			shellInFP = fopen(argv[1][0], "r");
 	}
 
 	/* Now for input readin. Keep reading input until "quit" command or eof of redirected input */

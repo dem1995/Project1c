@@ -1,1 +1,9 @@
-help
+Custom shell for POSIX systems (tested with Ubuntu November 2017)
+Author: David McKnight
+
+1. Compilation and usage:
+To compile the shell, use the make file via the commands "make" or "make all".
+
+To run the shell, simply invoke the name of the .out file produced by the make instruction.
+If you wish to use the shell with a batch file (i.e. instructions in a text file), call "[.out file name] [name of batch file in .out directory]"
+
