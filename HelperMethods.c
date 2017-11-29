@@ -96,11 +96,14 @@ void forkAndLaunch(char** args, char* inputFS, char* outputFS, bool shouldAppend
 		execvp(args[0], args);
 		//syserr("exec");
 	default:
-		if(shouldWaitForChild)
+		if (shouldWaitForChild)
+		{
+			fprintf(stdout, "Process with id %i is waiting for child to finish", pid);
 			do
 			{
 				int w = waitpid(pid, &status, WUNTRACED);
 			} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+		}
 	}
 }
 
