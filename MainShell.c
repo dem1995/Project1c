@@ -50,7 +50,7 @@ int main(int argc, char ** argv) {
 	/* Next, see if there's a batch file to process. */
 	if (argc>0)
 	{
-		fprintf(shellOutFP, "test3");
+		fprintf(shellOutFP, argv[1]);
 		/*
 		char* curEnv = getenv("PWD");
 		char* readmeFileAppend = "/readme";
