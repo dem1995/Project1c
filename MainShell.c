@@ -18,7 +18,7 @@
 #define KCYN  "\x1B[36m"	//Cyan text
 #define RESET "\x1B[0m"		//Reset text color
 
-bool customCommandCheck(char** args, FILE* readmeFP, FILE* inputFP, FILE* outputFP, char* inputFS, char* outputFS, bool ShouldAppend);
+bool customCommandCheck(char* arg0, char** args, FILE* readmeFP, FILE* inputFP, FILE* outputFP, char* inputFS, char* outputFS, bool ShouldAppend);
 
 extern char** environ;
 int main(int argc, char ** argv) {
@@ -30,8 +30,8 @@ int main(int argc, char ** argv) {
 	FILE* readmeFP = NULL;
 	FILE* shellInFP = stdin;
 	FILE* shellOutFP = stdout;
-	FILE* inputFP = stdin;		// Pointer to the user-defined input file; is NULL if none exists
-	FILE* outputFP = stdout;		// Pointer to the user-defined output file; is NULL if none exists
+	FILE* inputFP = NULL;		// Pointer to the user-defined input file; is NULL if none exists
+	FILE* outputFP = NULL;		// Pointer to the user-defined output file; is NULL if none exists
 	bool shouldAppend = false;	// Whether the output file should be appended to (if false, it is truncated)
 	
 	/* Firstly, prepare the readme file pointer */
@@ -101,9 +101,9 @@ int main(int argc, char ** argv) {
 		fclose(shellInFP);
 	if (shellOutFP != stdin)
 		fclose(shellOutFP);
-	if (inputFP != stdin)
+	if (inputFP != NULL)
 		fclose(inputFP);
-	if (outputFP != stdout)
+	if (outputFP != NULL)
 		fclose(outputFP);
 	return 0;
 }
@@ -111,7 +111,7 @@ int main(int argc, char ** argv) {
 /*
 * Checks for custom commands (commands specific to this shell) and carries them out if they are found
 */
-bool customCommandCheck(char** args, FILE* readmeFP, FILE* inputFP, FILE* outputFP, char* inputFS, char* outputFS, bool shouldAppend)
+bool customCommandCheck(char* arg0, char** args, FILE* readmeFP, FILE* inputFP, FILE* outputFP, char* inputFS, char* outputFS, bool shouldAppend)
 {
 	/*CLEAR COMMAND*/
 	if (!strcmp(args[0], "clr")) //"clear" command
@@ -154,8 +154,12 @@ bool customCommandCheck(char** args, FILE* readmeFP, FILE* inputFP, FILE* output
 		//FILE* output = fopen(outputFS, "w");
 
 		char** env = environ;
-		while (*env)
-			fprintf(outputFP, "%s\n", *env++); // step through environment
+		if (outputFP == NULL)
+			while (*env)
+				fprintf(stdout, "%s\n", *env++); // step through environment
+		else
+			while (*env)
+				fprintf(outputFP, "%s\n", *env++); // step through environment
 	}
 
 	/*CHANGE DIRECTORY COMMAND*/
@@ -184,16 +188,7 @@ bool customCommandCheck(char** args, FILE* readmeFP, FILE* inputFP, FILE* output
 	/*ECHO COMMAND*/
 	else if (!strcmp(args[0], "echo"))
 	{
-		if (args[1] != NULL)
-		{
-			fprintf(outputFP, args[1]);
-			for (int i = 2; args[i] != NULL; i++)
-			{
-				fprintf(outputFP, " ");
-				fprintf(outputFP, args[i]);
-			}
-		}
-
+		//TODO
 	}
 
 	/*PAUSE COMMAND*/
