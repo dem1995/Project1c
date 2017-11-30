@@ -1,4 +1,4 @@
-1b.out: MainShell.c
+1c.out: MainShell.c
 	gcc MainShell.c -o 1c.out
 all: 1c.out
 clean:
