@@ -63,8 +63,6 @@ void determineRedirection(char** argStrings, char* inputString, char* outputStri
 void forkAndLaunch(char** args, char* inputFS, char* outputFS, bool shouldAppend)
 {
 
-	fprintf(stdout, "test\n");
-
 	int status;
 	pid_t pid;
 	bool shouldWaitForChild = true;
