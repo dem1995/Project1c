@@ -85,7 +85,7 @@ int main(int argc, char ** argv) {
 				// check for internal commands
 				if (customCommandCheck(args[0], args, readmeFP, inputFP, outputFP, inputFS, outputFS, shouldAppend))
 					continue;
-				// check for quitting
+				/* QUIT COMMAND */
 				else if (!strcmp(args[0], "quit")) // "quit" command
 					break; // break out of 'while' look
 				// otherwise, launch this as an independent process using fork()
@@ -220,11 +220,11 @@ bool customCommandCheck(char* arg0, char** args, FILE* readmeFP, FILE* inputFP, 
 		transferAllFileContents(readmeFP, stdout);
 	}
 	/*TEST COMMAND*/
-	else if (!strcmp(args[0], "test"))
-	{
-		while (true)
-			fprintf(outputFP, "hi\n");
-	}
+	//else if (!strcmp(args[0], "test"))
+	//{
+	//	while (true)
+	//		fprintf(outputFP, "hi\n");
+	//}
 	else
 		return false;
 	return true;

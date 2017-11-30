@@ -5,5 +5,72 @@ Author: David McKnight
 To compile the shell, use the make file via the commands "make" or "make all".
 
 To run the shell, simply invoke the name of the .out file produced by the make instruction.
-If you wish to use the shell with a batch file (i.e. instructions in a text file), call "[.out file name] [name of batch file in .out directory]". The batch file name can either be the absolute location of the file ([absolute filepath]/[filename]) or it can be the filepath of the project in the current directory.
+If you wish to use the shell with a batch file (i.e. instructions in a text file), call "[.out file name] [name of batch file in .out directory]". The batch file name can either be the absolute location of the file ([absolute filepath]/[filename]) or it can be the filename within the directory that the executable file's contained in.
 
+
+//*GENERAL ARGUMENTS*//
+
+/*EXECUTE IN BACKGROUND*/
+Name : "&"
+Description : If last argument, executes the command in the background.
+
+/*LEFT REDIRECTION*/
+Name : [Command [+Arguments]]<[Input]
+Description : Uses input as stdin for Command
+
+/*RIGHT REDIRECTION*/
+Name : [Origin]>[Destination]
+Description : Pipes the output of [Origin] into [Destination]
+
+/*RIGHT REDIRECTION*/
+Name : [Origin]>[Destination]
+Description : Pipes the output of [Origin] into [Destination], replacing the contents of [Destination]
+
+/*RIGHT REDIRECTION - APPEND*/
+Name : [Origin]>>[Destination]
+Description : Pipes the output of [Origin] into [Destination], appending to the contents of [Destination]
+
+
+//*GENERAL COMMANDS*//
+
+/*CLEAR COMMAND*/
+Name : "clear"
+Unique Arguments : none
+Description : "clear" clears the terminal window (essentially calls "clear" on the bash window).
+
+/*DIRECTORY COMMAND*/
+Name : "dir"
+Unique Arguments : the file directory path to display. If none specified, defaults to PWD.
+Description : "dir" essentially calls ls -al [arguments]
+
+/*ENVIRONMENT COMMAND*/
+Name : "environ"
+Unique Arguments : none
+Description : "environ" outputs the environment variable
+
+/*CHANGE DIRECTORY COMMAND*/
+Name : "cd"
+Unique Arguments : file location, either given by [filename] if [filename] is a file in the current directory, or by /[absolutePathToFilename]/[filename].
+Description : changes the present working directory to whatever can be parsed from the argument
+
+/*ECHO COMMAND*/
+Name : "echo"
+Unique Arguments : none
+Description : changes the present working directory to /[cwd]/[filename] or /[absolutePathToFileName]/[filename], whichever is provided as an arg. Displays the current directory if no argument is given.
+	
+/*PAUSE COMMAND*/	
+Name : "pause"
+Unique Arguments : none
+Description : Pauses the (root) parent process until the user presses "enter".
+
+/*HELP COMMAND*/
+Name : "help"
+Unique arguments : none
+Description : Displays the contents of this file :p
+
+
+Observations:
+1. My argument accesses only activate if the argument is non-empty, so the checks occur before the accesses
+2. Pressing Ctrl+C while a command is being executed terminates the spawned process and the custom terminal. Pressing Ctrl+C while entering commands terminates my custom terminal, as expected. Sigint trapping might have allowed me to have Ctrl+C activate to kill a process being run in my bash, rather than terminating it and the bash, however execvp ruins my ability to trap sigints within the cihld process.
+3. Linux won't let my program do anything to files that the permissions under which I spawned my process wouldn't let me do anyway, so there's no need to check for permissions.
+4. Makefile works.
