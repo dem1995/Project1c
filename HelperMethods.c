@@ -56,6 +56,7 @@ void determineRedirection(char** argStrings, char* inputString, char* outputStri
 
 
 
+
 /*
 * Forks the current process and launches a new one. Prior to the launch, however, if the user has defined their own input and output locations, redirects I/O to them.
 */
@@ -68,20 +69,16 @@ void forkAndLaunch(char** args, char* inputFS, char* outputFS, bool shouldAppend
 	pid_t pid;
 	bool shouldWaitForChild = true;
 
+	/*Determine the last argument in args*/
 	int lastArgIndex;
-	for (lastArgIndex = 0; args[lastArgIndex] != NULL; lastArgIndex++)
-	{
-		fprintf(stdout, "Argument %i is %s\n", lastArgIndex, args[lastArgIndex]);
-	}
+	for (lastArgIndex = 0; args[lastArgIndex] != NULL; lastArgIndex++);
 	lastArgIndex--;
-	fprintf(stdout, "The last argument is %s\n", args[lastArgIndex]);
+	/*See if the last argument in args is $ (indicating that the spawned process should be run in the background)*/
 	if (!strcmp(args[lastArgIndex], "$"))
 	{
 		shouldWaitForChild = false;
 		args[lastArgIndex] = NULL;
 	}
-
-	fprintf(stdout, "comparison value %i\n", (int)shouldWaitForChild);
 	
 	switch (pid = fork())
 	{
@@ -118,47 +115,9 @@ void forkAndLaunch(char** args, char* inputFS, char* outputFS, bool shouldAppend
 		}
 	}
 
+	//pid_and_status pidAndStatus = { pid, &status };
+	//return pidAndStatus;
 }
-
-
-void bashLaunch(char* command, char* inputFS, char* outputFS, bool shouldAppend)
-{
-	int status;
-	pid_t pid;
-	switch (pid = fork())
-	{
-	case -1:
-		//syserr("fork");
-	case 0:
-		if (!strcmp(inputFS, "") == 0)
-			//if (inputFP!=NULL)
-		{
-			//dup2(fileno(inputFP), STDIN_FILENO);
-			//fclose(inputFP);
-			//stdin = inputFP;
-			freopen(inputFS, "r", stdin);
-		}
-		if (!strcmp(outputFS, "") == 0)
-			//if(outputFP!=NULL)
-		{
-			//dup2(fileno(inputFP), STDOUT_FILENO);
-			//fclose(outputFP);
-			//stdout = outputFP;
-			if (shouldAppend)
-				freopen(outputFS, "a+", stdout);
-			else
-				freopen(outputFS, "w", stdout);
-		}
-		execl("/bin/bash", "sh", "-c", command, (char *)0);
-		//syserr("exec");
-	default:
-		do
-		{
-			int w = waitpid(pid, &status, WUNTRACED);
-		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
-	}
-}
-
 
 /*
 * Removes redirection elements from the given string array (basically if "<", ">", or ">>" are tokens in the array, it removes those and the token immediately after them in the array).

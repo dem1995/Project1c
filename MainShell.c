@@ -27,18 +27,20 @@ int main(int argc, char ** argv) {
 	char** arg;					// working pointer thru args
 	char* prompt = "==>";		// shell prompt
 
-	FILE* readmeFP = NULL;
-	FILE* shellInFP = stdin;
-	FILE* shellOutFP = stdout;
+	FILE* readmeFP = NULL;		// Pointer to readme file
+	FILE* shellInFP = stdin;	// Pointer to shell-specific input file (either stdin or a batch file)
+	FILE* shellOutFP = stdout;	// Pointer to shell-specific output file (things that would not be piped, like prompts)
 	FILE* inputFP = NULL;		// Pointer to the user-defined input file; is NULL if none exists
 	FILE* outputFP = NULL;		// Pointer to the user-defined output file; is NULL if none exists
 	bool shouldAppend = false;	// Whether the output file should be appended to (if false, it is truncated)
-	
+
+	//pid_and_status* children = malloc(100 * sizeof(children));
+
 	/* Firstly, prepare the readme file pointer */
 	openFile(getenv("PWD"), "readme", &readmeFP, "r");
 
 	/* Next, see if there's a batch file to process. */
-	if (argv[1]!=NULL)
+	if (argv[1] != NULL)
 	{
 		if (argv[1][0] == '/')
 			shellInFP = fopen(argv[1], "r");
@@ -56,11 +58,11 @@ int main(int argc, char ** argv) {
 
 		//Prints the current directory to shellOutFP
 		fprintf(stdout, "Current pid %i\n", getpid());
-		if(shellInFP==stdin)
+		if (shellInFP == stdin)
 			fprintf(shellOutFP, KCYN"%s"RESET"%s ", getenv("PWD"), prompt); //write prompt
-		
-																	//Begin the process of executing a command if the user has entered things
-		if (fgets(buf, MAX_BUFFER, shellInFP)) // read a line
+
+		/*Interpret input (executing commands, etc.)*/
+		if (fgets(buf, MAX_BUFFER, shellInFP)) //read a line
 		{
 
 			/*TOKENIZING THE INPUT*/
@@ -68,7 +70,7 @@ int main(int argc, char ** argv) {
 			*arg++ = strtok(buf, SEPARATORS);
 			while ((*arg++ = strtok(NULL, SEPARATORS))); // last entry will be NULL	
 
-														 //if the user's input actually has things
+			//if the user's input actually has things
 			if (args[0])
 			{
 
@@ -86,10 +88,9 @@ int main(int argc, char ** argv) {
 				// check for quitting
 				else if (!strcmp(args[0], "quit")) // "quit" command
 					break; // break out of 'while' look
-						   //else execute command on computer
+				// otherwise, launch this as an independent process using fork()
 				else
 				{
-					fprintf(stdout, "testtest");
 					forkAndLaunch(args, inputFS, outputFS, shouldAppend);
 				}
 			}
@@ -168,11 +169,15 @@ bool customCommandCheck(char* arg0, char** args, FILE* readmeFP, FILE* inputFP, 
 	/*CHANGE DIRECTORY COMMAND*/
 	else if (!strcmp(args[0], "cd"))
 	{
-		if (args[1] == NULL) //if there's no second argument, just print the current directory
+		
+		if (args[1] == NULL) 
+		//if there's no second argument, just print the current directory
 		{
 			fprintf(stdout, "Current directory (According to environ): %s\n", getenv("PWD"));
 		}
-		else				//If there is a second argument
+		
+		else 
+		//if there is a second argument
 		{
 			if (chdir(args[1]) == 0)
 			{
