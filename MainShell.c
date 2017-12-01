@@ -57,7 +57,6 @@ int main(int argc, char ** argv) {
 	while (!feof(shellInFP)) {
 
 		//Prints the current directory to shellOutFP
-		fprintf(stdout, "Current pid %i\n", getpid());
 		if (shellInFP == stdin)
 			fprintf(shellOutFP, KCYN"%s"RESET"%s ", getenv("PWD"), prompt); //write prompt
 
@@ -218,6 +217,8 @@ bool customCommandCheck(char* arg0, char** args, FILE* readmeFP, FILE* inputFP, 
 	else if (!strcmp(args[0], "help"))
 	{
 		transferAllFileContents(readmeFP, stdout);
+		rewind(readmeFP);
+
 	}
 	/*TEST COMMAND*/
 	//else if (!strcmp(args[0], "test"))
